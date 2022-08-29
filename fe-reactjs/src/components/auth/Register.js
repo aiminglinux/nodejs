@@ -1,7 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { alertAction } from '../../store';
+
 const Register = () => {
+  const dispatch = useDispatch();
+  const alert = useSelector((state) => state.alert);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,6 +28,7 @@ const Register = () => {
 
     if (password !== retypePassword) {
       console.log('Password does not match!');
+      dispatch(alertAction.setAlert('Just for test', 'danger'));
     } else {
       console.log('SUCCESS');
     }
