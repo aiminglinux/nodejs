@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { alertAction } from '../../store';
+import { alertAction } from '../../store/index';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,12 @@ const Register = () => {
 
     if (password !== retypePassword) {
       console.log('Password does not match!');
-      dispatch(alertAction.setAlert('Just for test', 'danger'));
+      dispatch(
+        alertAction.setAlert({
+          msg: 'Password does not match',
+          alertType: 'danger',
+        })
+      );
     } else {
       console.log('SUCCESS');
     }
