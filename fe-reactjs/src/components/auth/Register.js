@@ -2,11 +2,11 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { alertAction } from '../../store/index';
+import { alertAction } from '../../store/alertSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const alert = useSelector((state) => state.alert);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,6 +15,8 @@ const Register = () => {
   });
 
   const { name, email, password, retypePassword } = formData;
+
+  const alerts = useSelector((state) => state.alert);
 
   const formChangeHandler = (e) => {
     setFormData({
@@ -25,17 +27,25 @@ const Register = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-
+    const id = uuidv4();
     if (password !== retypePassword) {
-      console.log('Password does not match!');
       dispatch(
         alertAction.setAlert({
-          msg: 'Password does not match',
+          id,
+          msg: 'Password do not match!',
           alertType: 'danger',
         })
       );
+      setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
     } else {
-      console.log('SUCCESS');
+      dispatch(
+        alertAction.setAlert({
+          id,
+          msg: 'Login sucessfully!',
+          alertType: 'success',
+        })
+      );
+      setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
     }
   };
   return (
