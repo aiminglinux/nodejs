@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { alertAction } from '../../store/alertSlice';
+// import { userAction } from '../../store/userSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const Register = () => {
@@ -15,8 +16,6 @@ const Register = () => {
   });
 
   const { name, email, password, retypePassword } = formData;
-
-  const alerts = useSelector((state) => state.alert);
 
   const formChangeHandler = (e) => {
     setFormData({
@@ -36,7 +35,6 @@ const Register = () => {
           alertType: 'danger',
         })
       );
-      setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
     } else {
       dispatch(
         alertAction.setAlert({
@@ -45,8 +43,8 @@ const Register = () => {
           alertType: 'success',
         })
       );
-      setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
     }
+    setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
   };
   return (
     <Fragment>
