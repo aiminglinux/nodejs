@@ -2,9 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
-import { alertAction } from '../../store/alertSlice';
-// import { userAction } from '../../store/userSlice';
-import { v4 as uuidv4 } from 'uuid';
+import setAlert from '../../store/alertAction';
+import { registerAccount } from '../../store/userSlice';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -26,26 +25,13 @@ const Register = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    const id = uuidv4();
     if (password !== retypePassword) {
-      dispatch(
-        alertAction.setAlert({
-          id,
-          msg: 'Password do not match!',
-          alertType: 'danger',
-        })
-      );
-    } else {
-      dispatch(
-        alertAction.setAlert({
-          id,
-          msg: 'Login sucessfully!',
-          alertType: 'success',
-        })
-      );
+      dispatch(setAlert('Password mismatch!', 'danger'));
+      return;
     }
-    setTimeout(() => dispatch(alertAction.removeAlert({ id })), 3000);
+    dispatch(registerAccount({ name, email, password }));
   };
+
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
