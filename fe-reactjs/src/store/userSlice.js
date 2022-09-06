@@ -26,11 +26,11 @@ export const registerAccount = createAsyncThunk(
       return res.data.token;
     } catch (error) {
       const errors = error.response.data.errors;
-
       if (errors) {
         errors.forEach((error) => {
           thunkApi.dispatch(setAlert(error.msg, 'danger'));
         });
+        return thunkApi.rejectWithValue(errors);
       }
     }
   }
@@ -43,15 +43,15 @@ const userSlice = createSlice({
     [registerAccount.pending]: (state) => {
       state.loading = true;
     },
-    [registerAccount.rejected]: (state) => {
-      localStorage.removeItem('token');
-      state.loading = false;
-      state.isAuthenticated = false;
-    },
     [registerAccount.fulfilled]: (state, action) => {
       state.token = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
+    },
+    [registerAccount.rejected]: (state) => {
+      localStorage.removeItem('token');
+      state.loading = false;
+      state.isAuthenticated = false;
     },
   },
 });
