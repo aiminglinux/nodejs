@@ -1,7 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAccount } from '../../store/userSlice';
 
 const Register = () => {
+  const { isAuthenticated } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,9 +22,11 @@ const Register = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-
-    console.log('SUCCESS');
+    dispatch(loginAccount({ email, password }));
   };
+
+  if (isAuthenticated) return <Redirect to='/dashboard' />;
+
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign In</h1>

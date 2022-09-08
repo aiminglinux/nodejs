@@ -74,7 +74,8 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.json({
-            token,
+            // token,
+            msg: 'Register successfully!',
           });
         }
       );
@@ -145,6 +146,7 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.json({
+            name: user.name,
             email: user.email,
             token,
           });

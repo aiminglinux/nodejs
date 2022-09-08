@@ -1,12 +1,14 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import setAlert from '../../store/alertAction';
 import { registerAccount } from '../../store/userSlice';
 
 const Register = () => {
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.user);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,11 +28,14 @@ const Register = () => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (password !== retypePassword) {
-      dispatch(setAlert('Password mismatch!', 'danger'));
-      return;
+      return dispatch(setAlert('Password mismatch!', 'danger'));
     }
     dispatch(registerAccount({ name, email, password }));
   };
+
+  if (isAuthenticated) {
+    <Redirect to='/dashboard' />;
+  }
 
   return (
     <Fragment>
