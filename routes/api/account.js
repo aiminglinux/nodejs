@@ -74,8 +74,7 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.json({
-            // token,
-            msg: 'Register successfully!',
+            token,
           });
         }
       );
@@ -86,7 +85,7 @@ router.post(
   }
 );
 
-router.get('/login', auth, async (req, res) => {
+router.get('/auth', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
       '-date -__v -_id -password'
@@ -98,7 +97,7 @@ router.get('/login', auth, async (req, res) => {
   }
 });
 
-//@route    POST api/auth
+//@route    POST api/account
 //@desc     Authen User & get token
 //@access   Public
 
@@ -146,8 +145,6 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.json({
-            name: user.name,
-            email: user.email,
             token,
           });
         }

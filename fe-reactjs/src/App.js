@@ -12,6 +12,14 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
+// import setAuthToken from './utils/setAuthToken';
+
+const localToken = localStorage.token;
+console.log('localToken: ', localToken);
+
+// if (localToken) {
+//   setAuthToken(localToken);
+// }
 
 const App = () => {
   return (
