@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { userActions } from '../../store/userSlice';
+// import { userActions } from '../../store/userSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, loading } = useSelector((state) => state.user);
   const logoutHandler = () => {
-    dispatch(userActions.logout());
+    // dispatch(userActions.logout());
   };
 
   const authLink = (

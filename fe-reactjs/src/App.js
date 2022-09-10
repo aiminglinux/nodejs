@@ -1,27 +1,30 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 //Redux
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import store from './store/index';
 
 import './App.css';
 
-import Navbar from './components/layout/Navbar';
-import Landing from './components/layout/Landing';
-import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
-// import setAuthToken from './utils/setAuthToken';
+import Landing from './components/layout/Landing';
+import Navbar from './components/layout/Navbar';
+import setAuthToken from './utils/setAuthToken';
+import { getUserDetails } from './features/User/userAction';
 
-const localToken = localStorage.token;
-console.log('localToken: ', localToken);
-
-// if (localToken) {
-//   setAuthToken(localToken);
-// }
 
 const App = () => {
+  const { token } = useSelector(state => state.user)
+  useEffect(() => {
+    if (token) {
+      setAuthToken(token);
+      store.dispatch(getUserDetails())
+    }
+  }, [token, dispatchEvent, setAuthToken])
+
   return (
     <Provider store={store}>
       <Router>
@@ -39,7 +42,7 @@ const App = () => {
         </Fragment>
       </Router>
     </Provider>
-  );
-};
+  )
+}
 
 export default App;

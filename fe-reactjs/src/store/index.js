@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 import thunk from 'redux-thunk';
 
-// import rootReducer from '../reducers';
-import alertReducer from './alertSlice';
-import userReducer from './userSlice';
+import alertReducer from '../features/Alert/alertSlice';
+import userReducer from '../features/User/userSlice'
 
 const middleware = [thunk];
 
