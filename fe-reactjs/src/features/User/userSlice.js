@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, getUserDetails } from './userAction';
+import { registerUser, getUserDetails, userLogin } from './userAction';
 
 const token = localStorage.getItem('token')
   ? localStorage.getItem('token')
@@ -10,19 +10,17 @@ const initialState = {
   isAuthenticated: false,
   userInfo: null,
   loading: false,
-  errors: null,
 };
 
 const pendingReducer = (state) => {
   state.loading = true
 }
 
-const rejectedReducer =  (state, action) => {
+const rejectedReducer =  (state) => {
   localStorage.removeItem('token')
   state.token = null
   state.isAuthenticated = false
   state.loading = false
-  state.errors = action.payload
 }
 
 const userSlice = createSlice({
@@ -39,21 +37,28 @@ const userSlice = createSlice({
   },
   extraReducers: {
     [registerUser.pending]: pendingReducer,
-    [getUserDetails.pending]: pendingReducer,
     [registerUser.rejected]: rejectedReducer,
-    [getUserDetails.rejected]: rejectedReducer,
     [registerUser.fulfilled]: (state, action) => {
       state.token = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
-      state.errors = null
     },
+
+    [getUserDetails.pending]: pendingReducer,
+    [getUserDetails.rejected]: rejectedReducer,
     [getUserDetails.fulfilled]: (state, action) => {
       state.isAuthenticated = true;
       state.loading = false;
-      state.errors = null
       state.userInfo = action.payload
-    }
+    },
+
+    [userLogin.pending]: pendingReducer,
+    [userLogin.rejected]: rejectedReducer,
+    [userLogin.fulfilled]: (state, action) => {
+      state.token = action.payload;
+      state.isAuthenticated = true;
+      state.loading = false;
+    },
   },
 })
 

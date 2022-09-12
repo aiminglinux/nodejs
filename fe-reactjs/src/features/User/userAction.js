@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import setAuthToken from '../../utils/setAuthToken';
 
 import setAlert from '../Alert/alertAction';
 
@@ -16,13 +15,15 @@ export const registerUser = createAsyncThunk(
         const res = await axios.post('/api/account/register', payload, config);
         localStorage.setItem('token', res.data.token)
         thunkApi.dispatch(setAlert('Register successfully!', 'success'))
-        thunkApi.dispatch(getUserDetails())
         return res.data.token;
       } catch (error) {
         const errors = error.response.data.errors;
-        if (errors) {
-          errors.forEach(error => thunkApi.dispatch(setAlert(error.msg, 'danger')))
-        }
+      if (errors) {
+        errors.forEach((error) => {
+          thunkApi.dispatch(setAlert(error.msg, 'danger'));
+        });
+        return thunkApi.rejectWithValue(errors);
+      }
       }
     }
   );
@@ -35,9 +36,37 @@ export const registerUser = createAsyncThunk(
         return res.data;
       } catch (error) {
         const errors = error.response.data.errors;
-        if (errors) {
-          return thunkApi.rejectWithValue(errors);
-        }
+      if (errors) {
+        errors.forEach((error) => {
+          thunkApi.dispatch(setAlert(error.msg, 'danger'));
+        });
+        return thunkApi.rejectWithValue(errors);
+      }
+      }
+    }
+  );
+
+  export const userLogin = createAsyncThunk(
+    'user/login',
+    async (payload, thunkApi) => {
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+        const res = await axios.post('/api/account/login', payload, config);
+        localStorage.setItem('token', res.data.token)
+        // thunkApi.dispatch(getUserDetails())
+        return res.data.token;
+      } catch (error) {
+        const errors = error.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => {
+          thunkApi.dispatch(setAlert(error.msg, 'danger'));
+        });
+        return thunkApi.rejectWithValue(errors);
+      }
       }
     }
   );

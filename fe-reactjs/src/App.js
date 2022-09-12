@@ -23,7 +23,7 @@ const App = () => {
       setAuthToken(token);
       store.dispatch(getUserDetails())
     }
-  }, [token, dispatchEvent, setAuthToken])
+  }, [token])
 
   return (
     <Provider store={store}>
