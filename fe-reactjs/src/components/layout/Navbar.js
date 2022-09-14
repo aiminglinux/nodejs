@@ -2,16 +2,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/User/userSlice';
+import { clearProfile } from '../../features/Profile/profileSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, loading } = useSelector((state) => state.user);
   const logoutHandler = () => {
+    dispatch(clearProfile());
     dispatch(logout());
   };
 
   const authLink = (
     <ul>
+      <li>
+        <Link to='/dashboard'>
+          <i className='fas fa-user'></i>{' '}
+          <span className='hide-sm'>Dashboard</span>
+        </Link>
+      </li>
       <li>
         <a onClick={logoutHandler} href='#!'>
           <i className='fas fa-sign-out-alt'></i>{' '}

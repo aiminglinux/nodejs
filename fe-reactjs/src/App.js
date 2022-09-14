@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 //Redux
 import { Provider, useSelector } from 'react-redux';
 import store from './store/index';
+import setAuthToken from './utils/setAuthToken';
+import { getUserDetails } from './features/User/userAction';
 
 import './App.css';
 
@@ -12,18 +14,19 @@ import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
-import setAuthToken from './utils/setAuthToken';
-import { getUserDetails } from './features/User/userAction';
-
+import Dashboard from './components/dashboard/Dashboard';
+import CreateProfile from './components/profile-forms/CreateProfile';
+import PrivateRoute from './components/routing/PrivateRoute';
+import editProfile from './components/profile-forms/EditProfile';
 
 const App = () => {
-  const { token } = useSelector(state => state.user)
+  const { token } = useSelector((state) => state.user);
   useEffect(() => {
     if (token) {
       setAuthToken(token);
-      store.dispatch(getUserDetails())
+      store.dispatch(getUserDetails());
     }
-  }, [token])
+  }, [token]);
 
   return (
     <Provider store={store}>
@@ -37,12 +40,15 @@ const App = () => {
             <Switch>
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
+              <PrivateRoute exact path='/dashboard' comp={Dashboard} />
+              <PrivateRoute exact path='/create-profile' comp={CreateProfile} />
+              <PrivateRoute exact path='/edit-profile' comp={editProfile} />
             </Switch>
           </section>
         </Fragment>
       </Router>
     </Provider>
-  )
-}
+  );
+};
 
 export default App;
