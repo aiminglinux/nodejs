@@ -2,10 +2,9 @@ import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 //Redux
-import { Provider, useSelector } from 'react-redux';
-import store from './store/index';
+import { useDispatch, useSelector } from 'react-redux';
+
 import setAuthToken from './utils/setAuthToken';
-import { getUserDetails } from './features/User/userAction';
 
 import './App.css';
 
@@ -17,37 +16,44 @@ import Navbar from './components/layout/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/profile-forms/CreateProfile';
 import PrivateRoute from './components/routing/PrivateRoute';
-import editProfile from './components/profile-forms/EditProfile';
+import EditProfile from './components/profile-forms/EditProfile';
+import AddExperience from './components/profile-forms/AddExperience';
+import AddEducation from './components/profile-forms/AddEducation';
+import { getUser } from './features/User/userAction';
+import { getProfile } from './features/Profile/profileAction';
 
 const App = () => {
   const { token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (token) {
       setAuthToken(token);
-      store.dispatch(getUserDetails());
+      dispatch(getUser());
+      dispatch(getProfile());
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   return (
-    <Provider store={store}>
-      <Router>
-        <Fragment>
-          <Navbar />
-          <Route exact path='/' component={Landing} />
+    <Router>
+      <Fragment>
+        <Navbar />
+        <Route exact path='/' component={Landing} />
 
-          <section className='container'>
-            <Alert />
-            <Switch>
-              <Route exact path='/register' component={Register} />
-              <Route exact path='/login' component={Login} />
-              <PrivateRoute exact path='/dashboard' comp={Dashboard} />
-              <PrivateRoute exact path='/create-profile' comp={CreateProfile} />
-              <PrivateRoute exact path='/edit-profile' comp={editProfile} />
-            </Switch>
-          </section>
-        </Fragment>
-      </Router>
-    </Provider>
+        <section className='container'>
+          <Alert />
+          <Switch>
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+            <PrivateRoute exact path='/dashboard' comp={Dashboard} />
+            <PrivateRoute exact path='/create-profile' comp={CreateProfile} />
+            <PrivateRoute exact path='/edit-profile' comp={EditProfile} />
+            <PrivateRoute exact path='/add-experience' comp={AddExperience} />
+            <PrivateRoute exact path='/add-education' comp={AddEducation} />
+          </Switch>
+        </section>
+      </Fragment>
+    </Router>
   );
 };
 
