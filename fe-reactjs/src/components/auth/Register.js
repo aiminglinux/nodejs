@@ -8,6 +8,7 @@ import { registerUser } from '../../features/User/userAction';
 const Register = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
+  console.log(isAuthenticated);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -33,9 +34,7 @@ const Register = () => {
     dispatch(registerUser({ name, email, password }));
   };
 
-  if(isAuthenticated) {
-    return <Redirect to='/dashboard'/>
-  }
+  if (isAuthenticated) return <Redirect to='/dashboard' />;
 
   return (
     <Fragment>

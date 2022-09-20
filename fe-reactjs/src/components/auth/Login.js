@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { userLogin } from '../../features/User/userAction';
+import { loadUser, userLogin } from '../../features/User/userAction';
 
-
-const Register = () => {
+const Login = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
@@ -23,12 +23,11 @@ const Register = () => {
 
   const formSubmitHandler = async (e) => {
     e.preventDefault();
-    dispatch(userLogin({ email, password }));
+    await dispatch(userLogin({ email, password })).unwrap();
+    // dispatch(loadUser());
   };
 
-  if(isAuthenticated) {
-    return <Redirect to='/dashboard'/>
-  }
+  if (isAuthenticated) return <Redirect to='/dashboard' />;
 
   return (
     <Fragment>
@@ -68,4 +67,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -4,9 +4,8 @@ import { useSelector } from 'react-redux';
 
 const Landing = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
-  if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
-  }
+  if (isAuthenticated) return <Redirect to='/dashboard' />;
+
   return (
     <section className='landing'>
       <div className='dark-overlay'>

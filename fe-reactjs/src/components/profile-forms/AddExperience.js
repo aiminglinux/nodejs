@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 
 import { addExperience } from '../../features/Profile/profileAction';
+import profileApi from '../../api/profileApi';
 
 const AddExperience = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const AddExperience = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(addExperience(formData)).unwrap();
+      await profileApi.addExperience(formData);
       history.push('/dashboard');
     } catch (error) {
       console.log('Failed to add', error);

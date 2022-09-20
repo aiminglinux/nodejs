@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, getUser, userLogin } from './userAction';
+import { registerUser, loadUser, userLogin } from './userAction';
 
 const token = localStorage.getItem('token')
   ? localStorage.getItem('token')
@@ -17,7 +17,7 @@ const pendingReducer = (state) => {
 };
 
 const rejectedReducer = (state) => {
-  localStorage.removeItem('token');
+  // localStorage.removeItem('token');
   state.token = null;
   state.isAuthenticated = false;
   state.loading = false;
@@ -51,9 +51,9 @@ const userSlice = createSlice({
       state.loading = false;
     },
 
-    [getUser.pending]: pendingReducer,
-    [getUser.rejected]: rejectedReducer,
-    [getUser.fulfilled]: (state, action) => {
+    [loadUser.pending]: pendingReducer,
+    [loadUser.rejected]: rejectedReducer,
+    [loadUser.fulfilled]: (state, action) => {
       state.isAuthenticated = true;
       state.loading = false;
       state.userInfo = action.payload;
@@ -61,8 +61,8 @@ const userSlice = createSlice({
 
     [userLogin.pending]: pendingReducer,
     [userLogin.rejected]: rejectedReducer,
-    [userLogin.fulfilled]: (state, action) => {
-      state.token = action.payload;
+    [userLogin.fulfilled]: (state, { payload }) => {
+      state.token = payload;
       state.isAuthenticated = true;
       state.loading = false;
     },

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { createProfile } from '../../features/Profile/profileAction';
+import profileApi from '../../api/profileApi';
 
 const CreateProfile = (props) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const CreateProfile = (props) => {
     e.preventDefault();
 
     try {
-      await dispatch(createProfile(formData)).unwrap();
+      await profileApi.create(formData);
       history.push('/dashboard');
     } catch (error) {
       console.log(error);

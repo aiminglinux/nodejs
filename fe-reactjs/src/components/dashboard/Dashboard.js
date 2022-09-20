@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import profileApi from '../../api/profileApi';
 import setAlert from '../../features/Alert/alertAction';
 
 import {
   deleteAccount,
-  deleteEducation,
-  deleteExperience,
   getProfile,
 } from '../../features/Profile/profileAction';
 import { clearProfile } from '../../features/Profile/profileSlice';
-import { getUser } from '../../features/User/userAction';
+import { loadUser } from '../../features/User/userAction';
 import { logout } from '../../features/User/userSlice';
 
 import Spinner from '../layout/Spinner';
@@ -20,17 +19,18 @@ import Experience from './Experience';
 
 const Dashboard = () => {
   const { profile, loading } = useSelector((state) => state.profile);
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo, isAuthenticated } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
     dispatch(getProfile());
   }, [dispatch]);
 
   const handleDeleleEduRecord = async (id) => {
     try {
-      await dispatch(deleteEducation(id)).unwrap();
+      await profileApi.deleteEducation(id);
+      dispatch(getProfile());
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +38,8 @@ const Dashboard = () => {
 
   const handleDeleleExpRecord = async (id) => {
     try {
-      await dispatch(deleteExperience(id)).unwrap();
+      await profileApi.deleteExperience(id);
+      dispatch(getProfile());
     } catch (error) {
       console.log(error);
     }

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import Moment from 'react-moment';
 
 const Education = ({ eduList, onDelete }) => {
@@ -40,4 +40,4 @@ const Education = ({ eduList, onDelete }) => {
   );
 };
 
-export default Education;
+export default memo(Education);

@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import axiosClient from '../../api/axiosClient';
+import profileApi from '../../api/profileApi';
+import axios from 'axios';
 
 import { addEducation } from '../../features/Profile/profileAction';
 
@@ -24,9 +27,9 @@ const AddEducation = () => {
     e.preventDefault();
     // dispatch(addEducation(formData));
     // history.push('/dashboard');
-
+    console.log(axios.defaults.headers.common['x-auth-token']);
     try {
-      await dispatch(addEducation(formData)).unwrap();
+      await profileApi.addEducation(formData);
       history.push('/dashboard');
     } catch (error) {
       console.log('Failed to add', error);
